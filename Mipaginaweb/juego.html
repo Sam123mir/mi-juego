@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Ahorcados</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .centered {
+            text-align: center;
+        }
+        .container {
+            margin: 0 auto;
+            width: 80%;
+            max-width: 800px;
+        }
+        #hangman img {
+            width: 100px; /* Ajusta según sea necesario */
+            height: auto;
+        }
+        #word {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        #congratulations {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #28a745;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="centered">Juego de Ahorcados</h1>
+    </header>
+    <main class="container">
+        <p id="hint-area">Aquí aparecerá la pista.</p>
+        <div id="game-area">
+            <p id="word">Palabra: _ _ _ _ _</p>
+            <input type="text" id="guess-input" maxlength="1">
+            <button onclick="guessLetter()">Adivinar</button>
+        </div>
+        <div id="timer">
+            Tiempo: 00:00
+        </div>
+        <div id="hangman">
+            <img src="hangman0.png" alt="Ahorcado">
+        </div>
+        <div id="congratulations">¡Felicidades! Has completado la palabra.</div>
+    </main>
+
+    <script>
+        const hints = {
+            'DOCTOR': 'Es una profesión que salva vidas',
+            // Agrega más palabras y pistas aquí
+        };
+
+        let word = 'DOCTOR'; // Palabra actual
+        let guessedLetters = [];
+        let attempts = 0;
+        const hangmanImages = [
+            'hangman0.png', // Imagen inicial (sin partes)
+            'hangman1.png', // Imagen con 1 parte
+            'hangman2.png', // Imagen con 2 partes
+            'hangman3.png', // Imagen con 3 partes
+            'hangman4.png', // Imagen con 4 partes
+            'hangman5.png', // Imagen con 5 partes
+            'hangman6.png'  // Imagen final (todo el ahorcado)
+        ];
+
+        function showHint() {
+            const hint = hints[word];
+            document.getElementById('hint-area').textContent = hint ? `Pista: ${hint}` : 'No hay pista disponible';
+        }
+
+        function updateHangman() {
+            const hangmanElement = document.getElementById('hangman');
+            hangmanElement.innerHTML = `<img src="${hangmanImages[attempts]}" alt="Ahorcado">`;
+        }
+
+        function updateWordDisplay() {
+            const wordDisplay = word.split('').map(letter => 
+                guessedLetters.includes(letter) ? letter : '_'
+            ).join(' ');
+            document.getElementById('word').textContent = `Palabra: ${wordDisplay}`;
+            
+            if (!wordDisplay.includes('_')) {
+                showCongratulations();
+                stopTimer();
+            }
+        }
+
+        function wrongGuess() {
+            attempts++;
+            if (attempts < hangmanImages.length) {
+                updateHangman();
+            } else {
+                alert('¡Juego terminado!');
+                stopTimer();
+            }
+        }
+
+        function guessLetter() {
+            const guess = document.getElementById('guess-input').value.toUpperCase();
+            if (guess && !guessedLetters.includes(guess)) {
+                guessedLetters.push(guess);
+                if (!word.includes(guess)) {
+                    wrongGuess();
+                }
+                updateWordDisplay();
+                document.getElementById('guess-input').value = ''; // Limpiar el campo de entrada
+            }
+        }
+
+        // Agregar manejador de eventos para la tecla Enter
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Evitar el comportamiento por defecto del Enter
+                guessLetter(); // Llamar a la función de adivinanza
+            }
+        });
+
+        // Mostrar mensaje de felicitación
+        function showCongratulations() {
+            const congratsElement = document.getElementById('congratulations');
+            congratsElement.style.display = 'block';
+        }
+
+        // Cronómetro
+        let timer;
+        let seconds = 0;
+        const timerElement = document.getElementById('timer');
+
+        function startTimer() {
+            timer = setInterval(function() {
+                seconds++;
+                const minutes = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                timerElement.textContent = `Tiempo: ${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timer);
+        }
+
+        // Iniciar el cronómetro y mostrar pista cuando la página se carga
+        window.onload = function() {
+            startTimer();
+            showHint();
+            updateWordDisplay();
+        };
+    </script>
+</body>
+</html>

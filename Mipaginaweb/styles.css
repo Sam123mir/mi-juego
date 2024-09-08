@@ -1,0 +1,81 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0; /* Fondo claro */
+}
+
+header {
+    background: #444; /* Fondo del encabezado */
+    color: #fff; /* Color del texto del encabezado */
+    padding: 10px 0;
+    text-align: center;
+}
+
+header p {
+    font-size: 1.2em;
+}
+
+nav {
+    background-color: #555; /* Fondo de la barra de navegación */
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    text-align: center;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #fff; /* Color del texto de los enlaces */
+    text-decoration: none;
+    padding: 10px;
+    display: inline-block;
+}
+
+section {
+    padding: 20px;
+    text-align: center;
+    background-color: #fff; /* Fondo blanco para las secciones */
+    border: 1px solid #ddd; /* Borde ligero para las secciones */
+    border-radius: 8px; /* Bordes redondeados */
+}
+
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    font-size: 0.8em; /* Ajusta el tamaño del texto aquí */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.btn {
+    background-color: #28a745; /* Verde brillante para el botón */
+    color: #fff; /* Color del texto del botón */
+    padding: 10px 20px;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 20px; /* Añade un margen superior si es necesario */
+}
+
+.btn:hover {
+    background-color: #218838; /* Verde más oscuro al pasar el ratón */
+}
